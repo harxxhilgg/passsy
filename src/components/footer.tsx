@@ -1,4 +1,4 @@
-import { Kbd } from "./ui/kbd"
+import { Kbd } from "./ui/kbd";
 
 export function Footer() {
   return (
@@ -9,5 +9,5 @@ export function Footer() {
         </p>
       </div>
     </footer>
-  )
+  );
 }
