@@ -9,7 +9,7 @@ export function NFlowEx() {
 
   const shuffle = () => {
     setValue(Math.random() * 100);
-  }
+  };
 
   return (
     <>
@@ -19,13 +19,9 @@ export function NFlowEx() {
         className="text-5xl font-semibold"
       />
 
-      <Button
-        className={"w-full"}
-        variant={"secondary"}
-        onClick={shuffle}
-      >
+      <Button className={"w-full"} variant={"secondary"} onClick={shuffle}>
         Shuffle
       </Button>
     </>
-  )
+  );
 }
