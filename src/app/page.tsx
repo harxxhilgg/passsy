@@ -1,21 +1,22 @@
 import { Footer } from "@/components/footer";
 import { SavedList } from "@/components/saved-passwords/saved-list";
+import { TotalSavedCount } from "@/components/saved-passwords/total-saved-count";
 import { StringGen } from "@/components/string-gen";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function Page() {
   return (
     <div className="flex min-h-svh flex-col p-6">
-      <main className="flex flex-1 flex-col items-center gap-6 pt-6">
+      <main className="flex flex-1 flex-col items-center gap-6 pt-10 sm:pt-6">
         <Card className="w-full max-w-lg">
-          <CardHeader>
+          {/* <CardHeader>
             <CardTitle
               className="cursor-default text-center text-lg tracking-wider select-none sm:text-xl"
               title="Passy"
             >
               🎲🔐
             </CardTitle>
-          </CardHeader>
+          </CardHeader> */}
 
           <CardContent className="mt-4">
             <StringGen />
@@ -23,9 +24,13 @@ export default function Page() {
         </Card>
 
         <Card className="w-full max-w-lg">
-          <CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between px-6">
             <CardTitle className="text-center text-base font-semibold">
               Saved Passwords
+            </CardTitle>
+
+            <CardTitle className="flex items-center gap-1 text-sm font-normal text-muted-foreground">
+              Total saved: <TotalSavedCount />
             </CardTitle>
           </CardHeader>
 
