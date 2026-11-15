@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AuthButton } from "@/components/auth/auth-button";
 
 const montserrat = Montserrat({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -30,7 +31,15 @@ export default function RootLayout({
     >
       <body>
         <ThemeProvider>
-          <TooltipProvider>{children}</TooltipProvider>
+          <TooltipProvider>
+            <div className="relative min-h-svh">
+              <header className="absolute top-4 right-4 z-40 sm:top-6 sm:right-6">
+                <AuthButton />
+              </header>
+
+              {children}
+            </div>
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>
