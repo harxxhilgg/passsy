@@ -1,5 +1,4 @@
 # Passsy 🔐
-# Passsy 🔐
 
 > A fast, privacy-focused password generator and zero-knowledge encrypted vault built with Next.js 16, Supabase, Prisma, and Tailwind CSS.
 
@@ -256,6 +255,7 @@ Passsy is optimized for deployment on [Vercel](https://vercel.com):
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE).
+
 > A fast, privacy-focused password generator and zero-knowledge encrypted vault built with Next.js 16, Supabase, Prisma, and Tailwind CSS.
 
 [![Next.js](https://img.shields.io/badge/Next.js-16.4.4-black?style=flat-square&logo=next.js)](https://nextjs.org/)
@@ -280,33 +280,39 @@ All sensitive data is encrypted server-side using **AES-256-GCM** before touchin
 ## ✨ Features
 
 ### ⚡ Instant Password Generator
+
 - **Customizable Length**: Sliders supporting 6 to 100 character password lengths.
 - **Character Diversity**: Toggle inclusion of numeric digits (`0-9`) and special symbols (`!@#$%^&*...`).
 - **Cryptographic Randomness**: Driven by secure random selection with instant entropy scoring.
 - **Zero Friction**: Generate and copy passwords without needing an account.
 
 ### 🛡️ End-to-End Encrypted Cloud Vault
+
 - **AES-256-GCM Encryption**: Credentials (`password`, `email`, optional `username`) are bundled and encrypted using authenticated Galois/Counter Mode with unique 96-bit IVs and 128-bit authentication tags.
 - **Searchable Plaintext Domain**: The website domain is preserved in plaintext for lightning-fast database indexing and client-side search.
 - **Google OAuth**: Fast, frictionless authentication powered by Supabase SSR with cross-origin protected Google avatars.
 - **Smart Auth Gate**: Guests can test the app freely; attempting to save prompts a non-intrusive sign-in dialog.
 
 ### ⭐ Pinned & Favorite Passwords
+
 - **1-Click Card Pinning**: Star your everyday accounts directly beside the website name. Pinned credentials automatically float to the top of your vault.
 - **Favorites Header Filter**: Toggle the star button next to Refresh to focus strictly on your favorite passwords with zero clutter.
 - **Optimistic UI**: Instant 0ms feedback when starring/unstarring with automatic background sync and error rollbacks.
 
 ### 🌐 Smart Favicon Resolution
+
 - **High-Resolution Icons**: Cards automatically detect the website domain and load the official favicon using Google's high-res favicon service (`sz=64`).
 - **Graceful Fallback**: Non-domain sites or failed image requests seamlessly render a clean Globe icon.
 - **Privacy First**: Favicon requests enforce `referrerPolicy="no-referrer"` to prevent domain leakage.
 
 ### 📊 Password Strength Indicators
+
 - **Dynamic Key Icons**: The key icon on every saved card changes color based on strength (Red $\rightarrow$ Orange $\rightarrow$ Amber $\rightarrow$ Lime $\rightarrow$ Emerald).
-- **Interactive Strength Meter**: Live progress bar and typography ratings (*Weak*, *Fair*, *Good*, *Strong*, *Very Strong*) update in real-time as you edit passwords in the modal.
+- **Interactive Strength Meter**: Live progress bar and typography ratings (_Weak_, _Fair_, _Good_, _Strong_, _Very Strong_) update in real-time as you edit passwords in the modal.
 
 ### 🎨 Modern Minimalist UX
-- **Refined Typography**: Custom *Instrument Serif* font pairings for elegant editorial headers.
+
+- **Refined Typography**: Custom _Instrument Serif_ font pairings for elegant editorial headers.
 - **Smooth Feedback**: Interactive copy-to-clipboard alerts slide in from the bottom-right.
 - **Safe Operations**: Destructive deletions are separated into the modal footer and protected with confirmation dialogs.
 - **Animated Counters**: Animated numeric transitions powered by `@number-flow/react`.
@@ -315,17 +321,17 @@ All sensitive data is encrypted server-side using **AES-256-GCM** before touchin
 
 ## 🛠️ Tech Stack
 
-| Category | Technology |
-|---|---|
-| **Framework** | [Next.js 16.4](https://nextjs.org/) (App Router, Turbopack, Server Actions) |
-| **Frontend** | [React 19](https://react.dev/), [TypeScript 5](https://www.typescriptlang.org/) |
-| **Styling** | [Tailwind CSS v4](https://tailwindcss.com/), [Base UI](https://base-ui.com/), [Lucide Icons](https://lucide.dev/) |
-| **Animation** | [Number Flow](https://number-flow.barvian.me/), [tw-animate-css](https://github.com/) |
-| **Database & ORM** | [PostgreSQL](https://www.postgresql.org/) (hosted on [Supabase](https://supabase.com/)), [Prisma ORM 7](https://www.prisma.io/) |
-| **Authentication** | [Supabase SSR Auth](https://supabase.com/docs/guides/auth/server-side) (Google OAuth) |
-| **Cryptography** | Node.js `crypto` (AES-256-GCM with PBKDF2/hex keys) |
-| **State Management** | [Zustand](https://zustand.docs.pmnd.rs/) |
-| **Testing** | [Vitest](https://vitest.dev/), [Testing Library](https://testing-library.com/), [JSDOM](https://github.com/jsdom/jsdom) |
+| Category             | Technology                                                                                                                      |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| **Framework**        | [Next.js 16.4](https://nextjs.org/) (App Router, Turbopack, Server Actions)                                                     |
+| **Frontend**         | [React 19](https://react.dev/), [TypeScript 5](https://www.typescriptlang.org/)                                                 |
+| **Styling**          | [Tailwind CSS v4](https://tailwindcss.com/), [Base UI](https://base-ui.com/), [Lucide Icons](https://lucide.dev/)               |
+| **Animation**        | [Number Flow](https://number-flow.barvian.me/), [tw-animate-css](https://github.com/)                                           |
+| **Database & ORM**   | [PostgreSQL](https://www.postgresql.org/) (hosted on [Supabase](https://supabase.com/)), [Prisma ORM 7](https://www.prisma.io/) |
+| **Authentication**   | [Supabase SSR Auth](https://supabase.com/docs/guides/auth/server-side) (Google OAuth)                                           |
+| **Cryptography**     | Node.js `crypto` (AES-256-GCM with PBKDF2/hex keys)                                                                             |
+| **State Management** | [Zustand](https://zustand.docs.pmnd.rs/)                                                                                        |
+| **Testing**          | [Vitest](https://vitest.dev/), [Testing Library](https://testing-library.com/), [JSDOM](https://github.com/jsdom/jsdom)         |
 
 ---
 
@@ -364,6 +370,7 @@ All sensitive data is encrypted server-side using **AES-256-GCM** before touchin
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - [Node.js 20+](https://nodejs.org/) or [Bun](https://bun.sh/)
 - A [Supabase](https://supabase.com/) project with Google OAuth enabled
 - PostgreSQL connection string (Supabase connection pooler + direct connection)
@@ -371,12 +378,14 @@ All sensitive data is encrypted server-side using **AES-256-GCM** before touchin
 ### Installation
 
 1. **Clone the repository:**
+
    ```bash
    git clone https://github.com/harxxhilgg/passsy.git
    cd passsy
    ```
 
 2. **Install dependencies:**
+
    ```bash
    bun install
    # or
@@ -385,10 +394,13 @@ All sensitive data is encrypted server-side using **AES-256-GCM** before touchin
 
 3. **Configure environment variables:**
    Create a `.env.local` file in the root directory:
+
    ```bash
    cp .env.example .env.local
    ```
+
    Fill in your configuration:
+
    ```env
    # Supabase Client Credentials
    NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
@@ -407,11 +419,13 @@ All sensitive data is encrypted server-side using **AES-256-GCM** before touchin
    ```
 
    > **Tip**: Generate a secure 64-character hex encryption key with:
+   >
    > ```bash
    > node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
    > ```
 
 4. **Initialize Prisma & Database:**
+
    ```bash
    bun x prisma generate
    # or npm
@@ -419,6 +433,7 @@ All sensitive data is encrypted server-side using **AES-256-GCM** before touchin
    ```
 
 5. **Start the development server:**
+
    ```bash
    bun dev
    # or
