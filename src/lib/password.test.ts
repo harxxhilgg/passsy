@@ -1,9 +1,12 @@
 import { describe, expect, it } from "vitest";
 import {
   buildCharset,
+  calcPasswordStrength,
   calcStrength,
   generatePassword,
   getStrengthColor,
+  getStrengthLabel,
+  getStrengthTextColor,
 } from "./password";
 
 const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -65,6 +68,32 @@ describe("calcStrength", () => {
   });
 });
 
+describe("calcPasswordStrength", () => {
+  it("returns 0 for empty password", () => {
+    expect(calcPasswordStrength("")).toBe(0);
+  });
+
+  it("scores weak passwords accurately", () => {
+    const score = calcPasswordStrength("abc");
+    expect(score).toBeLessThan(30);
+  });
+
+  it("scores strong passwords accurately", () => {
+    const score = calcPasswordStrength("C7!kL9#mP2$xQ5&v89012345");
+    expect(score).toBeGreaterThanOrEqual(90);
+  });
+});
+
+describe("getStrengthLabel", () => {
+  it("returns appropriate labels for scores", () => {
+    expect(getStrengthLabel(20)).toBe("Weak");
+    expect(getStrengthLabel(40)).toBe("Fair");
+    expect(getStrengthLabel(65)).toBe("Good");
+    expect(getStrengthLabel(80)).toBe("Strong");
+    expect(getStrengthLabel(95)).toBe("Very strong");
+  });
+});
+
 describe("getStrengthColor", () => {
   it("should return the red color if score is less than 30", () => {
     expect(getStrengthColor(29)).toBe("bg-red-500");
@@ -84,5 +113,15 @@ describe("getStrengthColor", () => {
 
   it("should return the emerald color is score is greater or equal to 90", () => {
     expect(getStrengthColor(90)).toBe("bg-emerald-500");
+  });
+});
+
+describe("getStrengthTextColor", () => {
+  it("returns appropriate text color classes based on score", () => {
+    expect(getStrengthTextColor(20)).toBe("text-red-500");
+    expect(getStrengthTextColor(45)).toBe("text-orange-500 dark:text-orange-400");
+    expect(getStrengthTextColor(65)).toBe("text-amber-500 dark:text-amber-400");
+    expect(getStrengthTextColor(80)).toBe("text-lime-500 dark:text-lime-400");
+    expect(getStrengthTextColor(95)).toBe("text-emerald-500 dark:text-emerald-400");
   });
 });

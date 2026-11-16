@@ -88,7 +88,11 @@ export function AuthButton() {
     "User";
 
   const avatarUrl =
-    user.user_metadata?.avatar_url || user.user_metadata?.picture || "";
+    user.user_metadata?.avatar_url ||
+    user.user_metadata?.picture ||
+    user.identities?.[0]?.identity_data?.avatar_url ||
+    user.identities?.[0]?.identity_data?.picture ||
+    "";
 
   const initials =
     userName
@@ -109,7 +113,11 @@ export function AuthButton() {
           )}
         >
           <Avatar className="size-6 shrink-0">
-            <AvatarImage src={avatarUrl} alt={userName} />
+            <AvatarImage
+              src={avatarUrl}
+              alt={userName}
+              referrerPolicy="no-referrer"
+            />
 
             <AvatarFallback className="text-xs font-semibold">
               {initials}
@@ -122,7 +130,11 @@ export function AuthButton() {
         <DropdownMenuContent align="end" className="w-60 p-1.5">
           <div className="mb-1 flex flex-row items-center gap-2.5 p-1.5 px-2">
             <Avatar className="size-8 shrink-0">
-              <AvatarImage src={avatarUrl} alt={userName} />
+              <AvatarImage
+                src={avatarUrl}
+                alt={userName}
+                referrerPolicy="no-referrer"
+              />
 
               <AvatarFallback className="text-xs font-semibold">
                 {initials}
@@ -164,8 +176,8 @@ export function AuthButton() {
       <AlertDialog open={isLogoutAlertOpen} onOpenChange={setIsLogoutAlertOpen}>
         <AlertDialogContent className="max-w-[calc(100vw-2rem)] gap-0 overflow-hidden p-0 sm:max-w-md">
           <div className="flex flex-col gap-4 p-6">
-            <AlertDialogHeader className="flex flex-col items-start gap-1 text-left sm:text-left">
-              <AlertDialogTitle className="text-left text-lg font-semibold tracking-tight text-foreground">
+            <AlertDialogHeader className="flex flex-col items-start gap-5 text-left sm:text-left">
+              <AlertDialogTitle className="text-left font-serif text-3xl font-semibold tracking-tight">
                 Logout?
               </AlertDialogTitle>
 

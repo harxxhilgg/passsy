@@ -1,17 +1,9 @@
-import { Geist_Mono, Montserrat } from "next/font/google";
-
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthButton } from "@/components/auth/auth-button";
-
-const montserrat = Montserrat({ subsets: ["latin"], variable: "--font-sans" });
-
-const fontMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-});
+import { fontMono, montserrat, playfairDisplay } from "@/utils/font";
 
 export default function RootLayout({
   children,
@@ -23,10 +15,10 @@ export default function RootLayout({
       lang="en"
       suppressHydrationWarning
       className={cn(
-        "antialiased",
+        "font-sans antialiased",
         fontMono.variable,
-        "font-sans",
-        montserrat.variable
+        montserrat.variable,
+        playfairDisplay.variable
       )}
     >
       <body>
