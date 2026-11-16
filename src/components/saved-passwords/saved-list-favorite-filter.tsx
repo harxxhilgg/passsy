@@ -40,7 +40,7 @@ export function SavedListFavoriteFilter() {
           className={cn(
             "size-3.5 transition-all duration-200",
             showFavoritesOnly
-              ? "fill-amber-400 text-amber-400 scale-105"
+              ? "scale-105 fill-amber-400 text-amber-400"
               : "text-muted-foreground"
           )}
         />

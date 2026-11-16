@@ -23,7 +23,7 @@ export default async function Page() {
 
         <Card className="w-full max-w-lg">
           <CardHeader className="flex flex-row items-center justify-between px-6">
-            <CardTitle className="text-2xl font-serif">
+            <CardTitle className="font-serif text-2xl">
               Saved Passwords
             </CardTitle>
 

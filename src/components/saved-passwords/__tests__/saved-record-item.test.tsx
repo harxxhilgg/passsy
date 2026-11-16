@@ -99,6 +99,8 @@ describe("SavedRecordItem", () => {
   it("renders pin button in card header", () => {
     render(<SavedRecordItem item={mockRecordWithoutUsername} />);
 
-    expect(screen.getByRole("button", { name: "Pin password" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Pin password" })
+    ).toBeInTheDocument();
   });
 });

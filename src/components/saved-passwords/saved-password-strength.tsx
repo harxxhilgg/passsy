@@ -30,7 +30,7 @@ export function SavedPasswordStrength({
     <div className={cn("flex flex-col gap-1.5 pt-1", className)}>
       <div className="flex items-center justify-between px-0.5 text-[11px] text-muted-foreground">
         <span>Password strength</span>
-        <span className="font-serif italic text-xs text-foreground/80">
+        <span className="font-serif text-xs text-foreground/80 italic">
           {label}
         </span>
       </div>

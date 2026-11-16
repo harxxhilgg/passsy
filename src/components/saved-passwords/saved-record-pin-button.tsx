@@ -51,7 +51,7 @@ export function SavedRecordPinButton({
       className={cn(
         "size-6 shrink-0 rounded-md transition-all duration-150 focus-visible:opacity-100",
         isPinned
-          ? "text-amber-400 fill-amber-400 opacity-100 hover:bg-amber-400/10"
+          ? "fill-amber-400 text-amber-400 opacity-100 hover:bg-amber-400/10"
           : "text-muted-foreground opacity-0 group-hover/record:opacity-100 hover:bg-muted hover:text-amber-400",
         className
       )}
@@ -63,7 +63,7 @@ export function SavedRecordPinButton({
       <Star
         className={cn(
           "size-3.5 transition-all duration-200",
-          isPinned && "fill-amber-400 text-amber-400 scale-105"
+          isPinned && "scale-105 fill-amber-400 text-amber-400"
         )}
       />
     </Button>

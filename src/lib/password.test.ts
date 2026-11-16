@@ -119,9 +119,13 @@ describe("getStrengthColor", () => {
 describe("getStrengthTextColor", () => {
   it("returns appropriate text color classes based on score", () => {
     expect(getStrengthTextColor(20)).toBe("text-red-500");
-    expect(getStrengthTextColor(45)).toBe("text-orange-500 dark:text-orange-400");
+    expect(getStrengthTextColor(45)).toBe(
+      "text-orange-500 dark:text-orange-400"
+    );
     expect(getStrengthTextColor(65)).toBe("text-amber-500 dark:text-amber-400");
     expect(getStrengthTextColor(80)).toBe("text-lime-500 dark:text-lime-400");
-    expect(getStrengthTextColor(95)).toBe("text-emerald-500 dark:text-emerald-400");
+    expect(getStrengthTextColor(95)).toBe(
+      "text-emerald-500 dark:text-emerald-400"
+    );
   });
 });

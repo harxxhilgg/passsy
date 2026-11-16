@@ -143,7 +143,10 @@ export function SavedRecordItem({ item }: SavedRecordItemProps) {
                 title={`Password strength: ${strengthLabel}`}
               >
                 <KeyRound
-                  className={cn("size-3.5 shrink-0 transition-colors", keyIconColor)}
+                  className={cn(
+                    "size-3.5 shrink-0 transition-colors",
+                    keyIconColor
+                  )}
                 />
               </span>
               <span className="truncate font-mono text-foreground">

@@ -22,7 +22,9 @@ describe("SavedRecordFavicon", () => {
   });
 
   it("falls back to globe icon when image fails to load", () => {
-    const { container } = render(<SavedRecordFavicon site="broken-domain.xyz" />);
+    const { container } = render(
+      <SavedRecordFavicon site="broken-domain.xyz" />
+    );
     const img = screen.getByRole("img");
     fireEvent.error(img);
 

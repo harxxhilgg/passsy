@@ -30,13 +30,17 @@ describe("SavedRecordPinButton", () => {
   it("renders unpinned state when isPinned is false", () => {
     render(<SavedRecordPinButton id="rec-1" isPinned={false} />);
 
-    expect(screen.getByRole("button", { name: "Pin password" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Pin password" })
+    ).toBeInTheDocument();
   });
 
   it("renders pinned state when isPinned is true", () => {
     render(<SavedRecordPinButton id="rec-1" isPinned={true} />);
 
-    expect(screen.getByRole("button", { name: "Unpin password" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Unpin password" })
+    ).toBeInTheDocument();
   });
 
   it("optimistically toggles store and calls togglePinPasswordAction on click", async () => {
