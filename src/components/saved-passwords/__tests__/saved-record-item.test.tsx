@@ -40,10 +40,15 @@ describe("SavedRecordItem", () => {
     render(<SavedRecordItem item={mockRecordWithoutUsername} />);
 
     expect(screen.getByText("google.com")).toBeInTheDocument();
+
     expect(screen.getByText("user@gmail.com")).toBeInTheDocument();
+
     expect(screen.getByText("••••••••••••")).toBeInTheDocument();
+
     expect(screen.getByTitle(/Password strength:/i)).toBeInTheDocument();
+
     expect(screen.queryByText("Password strength")).not.toBeInTheDocument();
+
     // Username row should not exist
     expect(screen.queryByTitle("Copy username")).not.toBeInTheDocument();
   });
@@ -52,6 +57,7 @@ describe("SavedRecordItem", () => {
     render(<SavedRecordItem item={mockRecordWithUsername} />);
 
     expect(screen.getByText("octocat")).toBeInTheDocument();
+
     expect(screen.getByTitle("Copy username")).toBeInTheDocument();
   });
 
@@ -88,5 +94,11 @@ describe("SavedRecordItem", () => {
     fireEvent.click(copyPassBtn);
 
     expect(writeTextMock).toHaveBeenCalledWith("super-secret-password-123");
+  });
+
+  it("renders pin button in card header", () => {
+    render(<SavedRecordItem item={mockRecordWithoutUsername} />);
+
+    expect(screen.getByRole("button", { name: "Pin password" })).toBeInTheDocument();
   });
 });
