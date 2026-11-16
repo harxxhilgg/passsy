@@ -14,8 +14,7 @@ describe("CopiedAlert", () => {
 
     const alert = container.firstElementChild;
 
-    expect(alert).toHaveClass("translate-y-0");
-    // OR BOTH IN ONE
+    expect(alert).toHaveClass("translate-x-0");
     expect(alert).toHaveClass("opacity-100");
   });
 
@@ -25,7 +24,8 @@ describe("CopiedAlert", () => {
     const alert = container.firstElementChild;
 
     expect(alert).not.toHaveClass("opacity-100");
-    expect(alert).toHaveClass("opacity-0 translate-y-2");
+    expect(alert).toHaveClass("opacity-0");
+    expect(alert).toHaveClass("translate-x-8");
   });
 
   it("should update visibility when show prop changes", () => {
@@ -33,13 +33,16 @@ describe("CopiedAlert", () => {
 
     let alert = container.firstElementChild;
 
-    expect(alert).toHaveClass("opacity-0 translate-y-2 pointer-events-none");
+    expect(alert).toHaveClass("opacity-0");
+    expect(alert).toHaveClass("translate-x-8");
+    expect(alert).toHaveClass("pointer-events-none");
 
     rerender(<CopiedAlert show={true} />);
 
     alert = container.firstElementChild;
 
-    expect(alert).toHaveClass("translate-y-0 opacity-100");
-    expect(alert).not.toHaveClass("pointer-events-none trnslate-y-2 opacity-0");
+    expect(alert).toHaveClass("translate-x-0");
+    expect(alert).toHaveClass("opacity-100");
+    expect(alert).not.toHaveClass("pointer-events-none");
   });
 });

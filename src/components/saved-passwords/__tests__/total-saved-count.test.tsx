@@ -5,7 +5,7 @@ import { TotalSavedCount } from "../total-saved-count";
 
 describe("TotalSavedCount", () => {
   beforeEach(() => {
-    useSaveDataStore.setState({ records: [], _hasHydrated: true });
+    useSaveDataStore.setState({ records: [], isInitialized: true });
   });
 
   it("renders 0 when no records are saved", () => {
@@ -19,6 +19,7 @@ describe("TotalSavedCount", () => {
         {
           id: "1",
           site: "google.com",
+          email: "user1@example.com",
           password: "pass",
           createdAt: "2026-01-01",
           updatedAt: "2026-01-01",
@@ -26,12 +27,13 @@ describe("TotalSavedCount", () => {
         {
           id: "2",
           site: "github.com",
+          email: "user2@example.com",
           password: "pass",
           createdAt: "2026-01-01",
           updatedAt: "2026-01-01",
         },
       ],
-      _hasHydrated: true,
+      isInitialized: true,
     });
 
     render(<TotalSavedCount />);

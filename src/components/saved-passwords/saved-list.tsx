@@ -11,6 +11,8 @@ import {
   useSaveDataStore,
   type SavedRecord,
 } from "@/app/stores/use-savedata-store";
+import { getUserPasswordsAction } from "@/app/actions/passwords";
+import { useAuth } from "@/hooks/use-auth";
 import { SavedListSearch } from "./saved-list-search";
 import { SavedListEmpty } from "./saved-list-empty";
 import { SavedRecordItem } from "./saved-record-item";
@@ -20,6 +22,7 @@ export type { SavedRecord };
 
 type SavedListProps = {
   data?: SavedRecord[] | null;
+  initialRecords?: SavedRecord[];
 };
 
 // Safe client hydration detection without cascading effect renders
@@ -27,19 +30,46 @@ const emptySubscribe = () => () => {};
 const getClientSnapshot = () => true;
 const getServerSnapshot = () => false;
 
-export function SavedList({ data }: SavedListProps) {
+export function SavedList({ data, initialRecords }: SavedListProps) {
   const storeRecords = useSaveDataStore((state) => state.records);
-  const hasHydrated = useSaveDataStore((state) => state._hasHydrated);
+  const isInitialized = useSaveDataStore((state) => state.isInitialized);
   const isClient = useSyncExternalStore(
     emptySubscribe,
     getClientSnapshot,
     getServerSnapshot
   );
+  const { user, isLoading: isAuthLoading } = useAuth();
+  const userId = user?.id;
+  const initialSyncRef = useRef(Boolean(initialRecords !== undefined));
 
-  const items = useMemo(
-    () => (data !== undefined ? (data ?? []) : storeRecords),
-    [data, storeRecords]
-  );
+  useEffect(() => {
+    if (initialRecords !== undefined) {
+      useSaveDataStore.getState().setRecords(initialRecords);
+      initialSyncRef.current = true;
+    }
+  }, [initialRecords]);
+
+  useEffect(() => {
+    if (userId) {
+      // If we already have initialRecords from server on mount, don't duplicate the fetch
+      if (initialSyncRef.current) {
+        initialSyncRef.current = false;
+        return;
+      }
+      void getUserPasswordsAction().then((res) => {
+        if (res.success && res.records) {
+          useSaveDataStore.getState().setRecords(res.records);
+        }
+      });
+    } else if (!isAuthLoading) {
+      useSaveDataStore.getState().clearRecords();
+    }
+  }, [userId, isAuthLoading]);
+
+  const items = useMemo(() => {
+    if (data !== undefined) return data ?? [];
+    return isInitialized ? storeRecords : (initialRecords ?? storeRecords);
+  }, [data, isInitialized, storeRecords, initialRecords]);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
@@ -86,8 +116,9 @@ export function SavedList({ data }: SavedListProps) {
     setDebouncedQuery("");
   };
 
-  // 1. Loading state (persisted records hydrating from localStorage)
-  const isLoading = !isClient || (!data && !hasHydrated);
+  // Loading state
+  const isLoading =
+    !isClient || (isAuthLoading && !isInitialized && !initialRecords);
 
   if (isLoading) {
     return (
@@ -98,12 +129,12 @@ export function SavedList({ data }: SavedListProps) {
     );
   }
 
-  // 2. Empty state (no saved records yet)
+  // Empty state (no saved records yet)
   if (items.length === 0) {
     return <SavedListEmpty type="no-records" />;
   }
 
-  // 3. Normal list with search and records
+  // Normal list with search and records
   return (
     <div className="flex flex-col">
       <SavedListSearch
