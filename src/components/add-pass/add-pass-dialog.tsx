@@ -143,12 +143,14 @@ export function AddPassDialog({
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor={field.name}>Site</FieldLabel>
+
                     <Input
                       {...field}
                       id={field.name}
                       placeholder="example.com"
                       aria-invalid={fieldState.invalid}
                     />
+
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}
@@ -163,6 +165,7 @@ export function AddPassDialog({
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor={field.name}>Email</FieldLabel>
+
                     <Input
                       {...field}
                       id={field.name}
@@ -170,6 +173,7 @@ export function AddPassDialog({
                       placeholder="email@example.com"
                       aria-invalid={fieldState.invalid}
                     />
+
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}
@@ -189,12 +193,14 @@ export function AddPassDialog({
                         (optional)
                       </span>
                     </FieldLabel>
+
                     <Input
                       {...field}
                       id={field.name}
                       placeholder="example_user"
                       aria-invalid={fieldState.invalid}
                     />
+
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}
@@ -281,10 +287,11 @@ export function AddPassDialog({
       <AlertDialog open={showAuthAlert} onOpenChange={setShowAuthAlert}>
         <AlertDialogContent className="max-w-[calc(100vw-2rem)] gap-0 overflow-hidden p-0 sm:max-w-md">
           <div className="flex flex-col gap-4 p-6">
-            <AlertDialogHeader className="flex flex-col items-start gap-1 text-left sm:text-left">
-              <AlertDialogTitle className="text-left text-lg font-semibold tracking-tight text-foreground">
+            <AlertDialogHeader className="flex flex-col items-start gap-5 text-left sm:text-left">
+              <AlertDialogTitle className="text-left font-serif text-3xl font-semibold tracking-tight">
                 Sign in to save passwords
               </AlertDialogTitle>
+
               <AlertDialogDescription className="text-left text-sm text-muted-foreground">
                 You need to be signed in with your account to securely store
                 passwords in your cloud vault.
@@ -293,6 +300,7 @@ export function AddPassDialog({
 
             <div className="flex flex-col gap-2 pt-1 text-left">
               <Info className="size-4 text-muted-foreground" />
+
               <p className="text-sm leading-relaxed text-muted-foreground">
                 Your credentials will be encrypted with AES-256-GCM and synced
                 securely to your account.
@@ -302,6 +310,7 @@ export function AddPassDialog({
 
           <AlertDialogFooter className="grid w-full grid-cols-2 gap-3 border-t border-border/40 p-4 sm:grid sm:grid-cols-2 sm:p-5">
             <AlertDialogCancel className="w-full">Cancel</AlertDialogCancel>
+
             <AlertDialogAction
               className="w-full"
               onClick={() => {

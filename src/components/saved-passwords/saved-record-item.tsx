@@ -21,6 +21,7 @@ import {
 import type { SavedRecord } from "@/app/stores/use-savedata-store";
 import { EditPassDialog } from "./edit-pass-dialog";
 import { SavedRecordFavicon } from "./saved-record-favicon";
+import { SavedRecordPinButton } from "./saved-record-pin-button";
 
 type SavedRecordItemProps = {
   item: SavedRecord;
@@ -56,12 +57,14 @@ export function SavedRecordItem({ item }: SavedRecordItemProps) {
   return (
     <>
       <div className="group/record flex min-w-0 animate-in flex-col gap-3 overflow-hidden rounded-2xl border border-border/60 bg-muted/30 p-3.5 shadow-xs transition-all duration-300 ease-out fade-in-0 zoom-in-95">
-        {/* Header: Site + Edit action */}
+        {/* Header: Site + Pin & Edit action */}
         <div className="flex items-center justify-between gap-2">
-          <div className="flex min-w-0 items-center gap-2">
+          <div className="flex min-w-0 items-center gap-1.5">
             <SavedRecordFavicon site={item.site} />
 
             <span className="truncate text-sm font-medium">{item.site}</span>
+
+            <SavedRecordPinButton id={item.id} isPinned={item.isPinned} />
           </div>
 
           {/* Edit button: shown on card hover */}
@@ -140,7 +143,10 @@ export function SavedRecordItem({ item }: SavedRecordItemProps) {
                 title={`Password strength: ${strengthLabel}`}
               >
                 <KeyRound
-                  className={cn("size-3.5 shrink-0 transition-colors", keyIconColor)}
+                  className={cn(
+                    "size-3.5 shrink-0 transition-colors",
+                    keyIconColor
+                  )}
                 />
               </span>
               <span className="truncate font-mono text-foreground">

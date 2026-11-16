@@ -20,7 +20,10 @@ function getCleanDomain(site: string): string {
         : new URL(`https://${trimmed}`);
     return url.hostname;
   } catch {
-    return trimmed.replace(/^https?:\/\//i, "").split("/")[0].split(":")[0];
+    return trimmed
+      .replace(/^https?:\/\//i, "")
+      .split("/")[0]
+      .split(":")[0];
   }
 }
 

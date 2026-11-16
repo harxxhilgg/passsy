@@ -1,6 +1,7 @@
 import { Footer } from "@/components/footer";
 import { SavedList } from "@/components/saved-passwords/saved-list";
 import { SavedListRefreshButton } from "@/components/saved-passwords/saved-list-refresh-button";
+import { SavedListFavoriteFilter } from "@/components/saved-passwords/saved-list-favorite-filter";
 import { TotalSavedCount } from "@/components/saved-passwords/total-saved-count";
 import { StringGen } from "@/components/string-gen";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,7 +23,7 @@ export default async function Page() {
 
         <Card className="w-full max-w-lg">
           <CardHeader className="flex flex-row items-center justify-between px-6">
-            <CardTitle className="text-2xl font-serif">
+            <CardTitle className="font-serif text-2xl">
               Saved Passwords
             </CardTitle>
 
@@ -30,6 +31,7 @@ export default async function Page() {
               <span>Total saved:</span>
 
               <TotalSavedCount />
+              <SavedListFavoriteFilter />
               <SavedListRefreshButton />
             </div>
           </CardHeader>

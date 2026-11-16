@@ -103,13 +103,31 @@ export function SavedList({ data, initialRecords }: SavedListProps) {
     return () => observer.disconnect();
   }, []);
 
-  // Filter items by site (case-insensitive)
+  const showFavoritesOnly = useSaveDataStore(
+    (state) => state.showFavoritesOnly
+  );
+
+  // Filter items by site (case-insensitive) & favorites filter, sorted with pinned first
   const filteredData = useMemo(() => {
     if (!items) return [];
+    let list = items;
+
     const query = debouncedQuery.trim().toLowerCase();
-    if (!query) return items;
-    return items.filter((item) => item.site.toLowerCase().includes(query));
-  }, [items, debouncedQuery]);
+    if (query) {
+      list = list.filter((item) => item.site.toLowerCase().includes(query));
+    }
+
+    if (showFavoritesOnly) {
+      list = list.filter((item) => Boolean(item.isPinned));
+    }
+
+    return [...list].sort((a, b) => {
+      const aPinned = Boolean(a.isPinned);
+      const bPinned = Boolean(b.isPinned);
+      if (aPinned === bPinned) return 0;
+      return aPinned ? -1 : 1;
+    });
+  }, [items, debouncedQuery, showFavoritesOnly]);
 
   const handleClearSearch = () => {
     setSearchQuery("");
@@ -152,7 +170,11 @@ export function SavedList({ data, initialRecords }: SavedListProps) {
       >
         <div ref={contentRef} className="flex flex-col gap-3.5">
           {filteredData.length === 0 ? (
-            <SavedListEmpty type="no-results" query={debouncedQuery} />
+            showFavoritesOnly && !debouncedQuery ? (
+              <SavedListEmpty type="no-favorites" />
+            ) : (
+              <SavedListEmpty type="no-results" query={debouncedQuery} />
+            )
           ) : (
             filteredData.map((item) => (
               <SavedRecordItem key={item.id} item={item} />
