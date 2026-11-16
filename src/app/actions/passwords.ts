@@ -12,6 +12,7 @@ export type SavedRecordData = {
   email: string;
   username?: string;
   password: string;
+  isPinned?: boolean;
   createdAt: string;
   updatedAt: string;
 };
@@ -49,7 +50,7 @@ export async function getUserPasswordsAction(): Promise<{
 
     const records = await prisma.passwordRecord.findMany({
       where: { userId: user.id },
-      orderBy: { createdAt: "desc" },
+      orderBy: [{ isPinned: "desc" }, { createdAt: "desc" }],
     });
 
     const decryptedRecords: SavedRecordData[] = [];
@@ -69,6 +70,7 @@ export async function getUserPasswordsAction(): Promise<{
           email: payload.email,
           username: payload.username || undefined,
           password: payload.password,
+          isPinned: record.isPinned ?? false,
           createdAt: record.createdAt.toISOString(),
           updatedAt: record.updatedAt.toISOString(),
         });
@@ -134,6 +136,7 @@ export async function savePasswordAction(data: {
         ciphertext,
         iv,
         tag,
+        isPinned: false,
       },
     });
 
@@ -147,6 +150,7 @@ export async function savePasswordAction(data: {
         email: payload.email,
         username: payload.username || undefined,
         password: payload.password,
+        isPinned: false,
         createdAt: record.createdAt.toISOString(),
         updatedAt: record.updatedAt.toISOString(),
       },
@@ -217,6 +221,7 @@ export async function updatePasswordAction(
         email: payload.email,
         username: payload.username || undefined,
         password: payload.password,
+        isPinned: updated.isPinned ?? false,
         createdAt: updated.createdAt.toISOString(),
         updatedAt: updated.updatedAt.toISOString(),
       },
@@ -226,6 +231,51 @@ export async function updatePasswordAction(
     return {
       success: false,
       error: "Failed to update password.",
+    };
+  }
+}
+
+export async function togglePinPasswordAction(
+  id: string
+): Promise<{ success: boolean; isPinned?: boolean; error?: string }> {
+  try {
+    const user = await getAuthenticatedUser();
+    if (!user) {
+      return {
+        success: false,
+        error: "You must be signed in to pin passwords.",
+      };
+    }
+
+    const existing = await prisma.passwordRecord.findUnique({
+      where: { id },
+    });
+
+    if (!existing || existing.userId !== user.id) {
+      return {
+        success: false,
+        error: "Record not found or unauthorized.",
+      };
+    }
+
+    const updated = await prisma.passwordRecord.update({
+      where: { id },
+      data: {
+        isPinned: !existing.isPinned,
+      },
+    });
+
+    revalidatePath("/");
+
+    return {
+      success: true,
+      isPinned: updated.isPinned,
+    };
+  } catch (err) {
+    console.error("togglePinPasswordAction error:", err);
+    return {
+      success: false,
+      error: "Failed to toggle pin.",
     };
   }
 }
