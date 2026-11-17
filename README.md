@@ -2,7 +2,7 @@
 
 > A fast, privacy-focused password generator and zero-knowledge encrypted vault built with Next.js 16, Supabase, Prisma, and Tailwind CSS.
 
-[![Next.js](https://img.shields.io/badge/Next.js-16.4.4-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-16.4.6-black?style=flat-square&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19-blue?style=flat-square&logo=react)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38bdf8?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
@@ -258,7 +258,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 > A fast, privacy-focused password generator and zero-knowledge encrypted vault built with Next.js 16, Supabase, Prisma, and Tailwind CSS.
 
-[![Next.js](https://img.shields.io/badge/Next.js-16.4.4-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-16.4.6-black?style=flat-square&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19-blue?style=flat-square&logo=react)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38bdf8?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
