@@ -1,6 +1,6 @@
 "use client";
 
-import { SearchX, Star, Vault } from "lucide-react";
+import { Pin, SearchX, Vault } from "lucide-react";
 
 type SavedListEmptyProps = {
   type: "no-records" | "no-results" | "no-favorites";
@@ -11,14 +11,14 @@ export function SavedListEmpty({ type, query }: SavedListEmptyProps) {
   if (type === "no-favorites") {
     return (
       <div className="flex animate-in flex-col items-center justify-center py-8 text-center text-muted-foreground duration-200 fade-in-0">
-        <Star className="mb-2 size-8 text-amber-400/50" />
+        <Pin className="mb-2 size-8 text-amber-400/50" />
 
         <p className="text-sm font-medium text-foreground">
-          No favorite passwords yet
+          No pinned passwords yet
         </p>
 
         <p className="mt-0.5 text-xs text-muted-foreground">
-          Click the star icon on any password to pin it here
+          Pin passwords from their options menu to view them here
         </p>
       </div>
     );

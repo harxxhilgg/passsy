@@ -14,7 +14,7 @@ describe("SavedListFavoriteFilter", () => {
     render(<SavedListFavoriteFilter />);
 
     const button = screen.getByRole("button", {
-      name: "Show favorite passwords only",
+      name: "Show pinned passwords only",
     });
     expect(button).toBeInTheDocument();
     expect(button).toHaveAttribute("aria-pressed", "false");
@@ -24,7 +24,7 @@ describe("SavedListFavoriteFilter", () => {
     render(<SavedListFavoriteFilter />);
 
     const button = screen.getByRole("button", {
-      name: "Show favorite passwords only",
+      name: "Show pinned passwords only",
     });
 
     fireEvent.click(button);

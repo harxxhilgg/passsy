@@ -1,13 +1,23 @@
 "use client";
 
-import { useState } from "react";
-import { Info, LogOut } from "lucide-react";
+import { useState, useSyncExternalStore } from "react";
+import Link from "next/link";
+import { History, Info, LogOut } from "lucide-react";
+import { useTheme } from "next-themes";
 import { useAuth } from "@/hooks/use-auth";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -23,10 +33,19 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
-import { Separator } from "../ui/separator";
+
+const emptySubscribe = () => () => { };
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
 
 export function AuthButton() {
+  const isClient = useSyncExternalStore(
+    emptySubscribe,
+    getClientSnapshot,
+    getServerSnapshot
+  );
   const { user, isLoading, signInWithGoogle, signOut } = useAuth();
+  const { theme, setTheme } = useTheme();
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [isLogoutAlertOpen, setIsLogoutAlertOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -127,49 +146,76 @@ export function AuthButton() {
           <span className="truncate text-[15px] font-medium">{userName}</span>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent align="end" className="w-60 p-1.5">
-          <div className="mb-1 flex flex-row items-center gap-2.5 p-1.5 px-2">
-            <Avatar className="size-8 shrink-0">
-              <AvatarImage
-                src={avatarUrl}
-                alt={userName}
-                referrerPolicy="no-referrer"
-              />
-
-              <AvatarFallback className="text-xs font-semibold">
-                {initials}
-              </AvatarFallback>
-            </Avatar>
-
-            <div className="flex min-w-0 flex-col">
-              <span
-                className="cursor-default truncate text-[16px] font-semibold"
-                title={userName}
-              >
-                {userName}
-              </span>
-
-              {user.email && (
-                <span
-                  className="cursor-default truncate overflow-hidden text-xs text-muted-foreground"
-                  title={user.email}
-                >
-                  {user.email}
-                </span>
-              )}
-            </div>
-          </div>
-
-          <Separator className={"my-1.5"} />
-
+        <DropdownMenuContent align="end" className="w-48 p-1.5">
           <DropdownMenuItem
-            variant="destructive"
-            onClick={() => setIsLogoutAlertOpen(true)}
+            render={<Link href="/activity" />}
             className="cursor-pointer"
           >
-            <LogOut className="size-4" />
-            <span>Log out</span>
+            <History className="size-4" />
+            <span>History</span>
           </DropdownMenuItem>
+
+          <DropdownMenuSeparator className="my-1.5" />
+
+          <DropdownMenuGroup>
+            <DropdownMenuLabel className="px-2 py-1 text-xs font-normal text-muted-foreground">
+              Appearance
+            </DropdownMenuLabel>
+
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger className="cursor-pointer">
+                <span>Theme</span>
+              </DropdownMenuSubTrigger>
+
+              <DropdownMenuSubContent
+                side="left"
+                alignOffset={-4}
+                className="min-w-32 p-1"
+              >
+                <DropdownMenuRadioGroup
+                  value={isClient ? theme : "system"}
+                  onValueChange={(val) => setTheme(val)}
+                >
+                  <DropdownMenuRadioItem
+                    value="system"
+                    className="cursor-pointer"
+                  >
+                    System
+                  </DropdownMenuRadioItem>
+
+                  <DropdownMenuRadioItem
+                    value="light"
+                    className="cursor-pointer"
+                  >
+                    Light
+                  </DropdownMenuRadioItem>
+
+                  <DropdownMenuRadioItem
+                    value="dark"
+                    className="cursor-pointer"
+                  >
+                    Dark
+                  </DropdownMenuRadioItem>
+                </DropdownMenuRadioGroup>
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
+          </DropdownMenuGroup>
+
+          <DropdownMenuSeparator className="my-1.5" />
+
+          <DropdownMenuGroup>
+            <DropdownMenuLabel className="px-2 py-1 text-xs font-normal text-muted-foreground">
+              Danger Zone
+            </DropdownMenuLabel>
+
+            <DropdownMenuItem
+              onClick={() => setIsLogoutAlertOpen(true)}
+              className="cursor-pointer"
+            >
+              <LogOut className="size-4" />
+              <span>Logout</span>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
 
