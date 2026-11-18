@@ -135,4 +135,17 @@ describe("EditPassDialog", () => {
 
     expect(screen.getByText("Password strength")).toBeInTheDocument();
   });
+
+  it("maintains a stable min-width on save changes button to prevent layout shift", () => {
+    render(
+      <EditPassDialog
+        open={true}
+        onOpenChange={vi.fn()}
+        record={initialRecord}
+      />
+    );
+
+    const saveButton = screen.getByRole("button", { name: /save changes/i });
+    expect(saveButton.className).toMatch(/min-w-(?:\[118px\]|29\.5)/);
+  });
 });
