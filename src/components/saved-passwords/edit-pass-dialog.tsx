@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
-import { Eye, EyeOff, Info, Trash2 } from "lucide-react";
+import { Eye, EyeOff, Trash2 } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -12,16 +12,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import {
   Field,
   FieldError,
@@ -35,11 +25,10 @@ import {
   useSaveDataStore,
   type SavedRecord,
 } from "@/app/stores/use-savedata-store";
-import {
-  updatePasswordAction,
-  deletePasswordAction,
-} from "@/app/actions/passwords";
+import { usePasswordHistoryStore } from "@/app/stores/use-password-history-store";
+import { updatePasswordAction } from "@/app/actions/passwords";
 import { SavedPasswordStrength } from "./saved-password-strength";
+import { DeletePassDialog } from "./delete-pass-dialog";
 
 type EditPassDialogProps = {
   open: boolean;
@@ -67,11 +56,9 @@ export function EditPassDialog({
   const [showPass, setShowPass] = useState(false);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
 
   const updateRecord = useSaveDataStore((state) => state.updateRecord);
-  const removeRecord = useSaveDataStore((state) => state.removeRecord);
 
   const form = useForm<PassFormValues>({
     resolver: zodResolver(passSchema),
@@ -119,29 +106,14 @@ export function EditPassDialog({
 
     if (res.success && res.record) {
       updateRecord(record.id, res.record);
+      usePasswordHistoryStore.getState().addActivity({
+        site: res.record.site,
+        action: "updated",
+      });
       setShowPass(false);
       onOpenChange(false);
     } else {
       setServerError(res.error || "Failed to update password.");
-    }
-  };
-
-  const handleDelete = async () => {
-    setIsDeleting(true);
-    setServerError(null);
-
-    const res = await deletePasswordAction(record.id);
-
-    setIsDeleting(false);
-
-    if (res.success) {
-      removeRecord(record.id);
-      setShowPass(false);
-      setShowDeleteAlert(false);
-      onOpenChange(false);
-    } else {
-      setServerError(res.error || "Failed to delete password.");
-      setShowDeleteAlert(false);
     }
   };
 
@@ -285,7 +257,7 @@ export function EditPassDialog({
                 variant="ghost"
                 className="text-destructive hover:bg-destructive/10 hover:text-destructive sm:mr-auto"
                 onClick={() => setShowDeleteAlert(true)}
-                disabled={isSaving || isDeleting}
+                disabled={isSaving}
               >
                 <Trash2 className="size-4" />
                 Delete
@@ -296,12 +268,16 @@ export function EditPassDialog({
                   type="button"
                   variant="outline"
                   onClick={() => handleOpenChange(false)}
-                  disabled={isSaving || isDeleting}
+                  disabled={isSaving}
                 >
                   Cancel
                 </Button>
 
-                <Button type="submit" disabled={isSaving || isDeleting}>
+                <Button
+                  type="submit"
+                  disabled={isSaving}
+                  className="min-w-29.5"
+                >
                   {isSaving ? <Spinner className="size-4" /> : "Save changes"}
                 </Button>
               </div>
@@ -311,45 +287,15 @@ export function EditPassDialog({
       </Dialog>
 
       {/* Delete Confirmation Alert Dialog */}
-      <AlertDialog open={showDeleteAlert} onOpenChange={setShowDeleteAlert}>
-        <AlertDialogContent className="max-w-[calc(100vw-2rem)] gap-0 overflow-hidden p-0 sm:max-w-md">
-          <div className="flex flex-col gap-4 p-6">
-            <AlertDialogHeader className="flex flex-col items-start gap-5 text-left sm:text-left">
-              <AlertDialogTitle className="text-left font-serif text-3xl font-semibold tracking-tight text-foreground">
-                Delete password?
-              </AlertDialogTitle>
-
-              <AlertDialogDescription className="text-left text-sm text-muted-foreground">
-                Are you sure you want to delete this password for {record.site}?
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-
-            <div className="flex flex-col gap-2 pt-1 text-left">
-              <Info className="size-4 text-muted-foreground" />
-
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                This action cannot be undone. This record will be permanently
-                removed from your encrypted vault.
-              </p>
-            </div>
-          </div>
-
-          <AlertDialogFooter className="grid w-full grid-cols-2 gap-3 border-t border-border/40 p-4 sm:grid sm:grid-cols-2 sm:p-5">
-            <AlertDialogCancel className="w-full" disabled={isDeleting}>
-              Cancel
-            </AlertDialogCancel>
-
-            <AlertDialogAction
-              variant="destructive"
-              className="w-full"
-              onClick={handleDelete}
-              disabled={isDeleting}
-            >
-              {isDeleting ? <Spinner className="size-4" /> : "Delete"}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <DeletePassDialog
+        open={showDeleteAlert}
+        onOpenChange={setShowDeleteAlert}
+        record={record}
+        onDeleted={() => {
+          setShowPass(false);
+          onOpenChange(false);
+        }}
+      />
     </>
   );
 }

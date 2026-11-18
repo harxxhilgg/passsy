@@ -34,6 +34,7 @@ import { Button } from "../ui/button";
 import { Spinner } from "../ui/spinner";
 import { useAuth } from "@/hooks/use-auth";
 import { useSaveDataStore } from "@/app/stores/use-savedata-store";
+import { usePasswordHistoryStore } from "@/app/stores/use-password-history-store";
 import { savePasswordAction } from "@/app/actions/passwords";
 
 type AddPassDialogProps = {
@@ -116,6 +117,11 @@ export function AddPassDialog({
 
     if (res.success && res.record) {
       addRecord(res.record);
+      usePasswordHistoryStore.getState().addActivity({
+        site: res.record.site,
+        action: "saved",
+        timestamp: res.record.createdAt,
+      });
       form.reset();
       setShowPass(false);
       onOpenChange(false);

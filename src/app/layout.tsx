@@ -25,7 +25,7 @@ export default function RootLayout({
         <ThemeProvider>
           <TooltipProvider>
             <div className="relative min-h-svh">
-              <header className="absolute top-4 right-4 z-40 sm:top-6 sm:right-6">
+              <header className="absolute top-4 right-4 z-40 flex items-center gap-2 sm:top-6 sm:right-6">
                 <AuthButton />
               </header>
 

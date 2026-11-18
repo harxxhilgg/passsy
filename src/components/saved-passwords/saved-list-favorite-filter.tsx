@@ -1,6 +1,6 @@
 "use client";
 
-import { Star } from "lucide-react";
+import { Pin } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useSaveDataStore } from "@/app/stores/use-savedata-store";
@@ -32,11 +32,11 @@ export function SavedListFavoriteFilter() {
         aria-label={
           showFavoritesOnly
             ? "Show all passwords"
-            : "Show favorite passwords only"
+            : "Show pinned passwords only"
         }
         aria-pressed={showFavoritesOnly}
       >
-        <Star
+        <Pin
           className={cn(
             "size-3.5 transition-all duration-200",
             showFavoritesOnly
@@ -47,7 +47,7 @@ export function SavedListFavoriteFilter() {
       </TooltipTrigger>
 
       <TooltipContent side="bottom">
-        {showFavoritesOnly ? "Show all passwords" : "Filter favorites"}
+        {showFavoritesOnly ? "Show all passwords" : "Show pinned passwords"}
       </TooltipContent>
     </Tooltip>
   );

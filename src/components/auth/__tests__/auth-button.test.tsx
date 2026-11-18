@@ -105,8 +105,21 @@ describe("AuthButton", () => {
 
     await user.click(userButton);
 
+    const historyItem = await screen.findByRole("menuitem", {
+      name: /history/i,
+    });
+    expect(historyItem).toBeInTheDocument();
+
+    expect(screen.getByText("Appearance")).toBeInTheDocument();
+
+    expect(
+      screen.getByRole("menuitem", { name: /theme/i })
+    ).toBeInTheDocument();
+
+    expect(screen.getByText("Danger Zone")).toBeInTheDocument();
+
     const logoutItem = await screen.findByRole("menuitem", {
-      name: /log out/i,
+      name: /logout|log out/i,
     });
 
     expect(logoutItem).toBeInTheDocument();
@@ -137,7 +150,7 @@ describe("AuthButton", () => {
     await user.click(userButton);
 
     const logoutItem = await screen.findByRole("menuitem", {
-      name: /log out/i,
+      name: /logout|log out/i,
     });
     await user.click(logoutItem);
 
@@ -178,7 +191,7 @@ describe("AuthButton", () => {
     });
 
     // Make signOut hang so we can assert the spinner state
-    let resolveSignOut: () => void = () => {};
+    let resolveSignOut: () => void = () => { };
 
     mockSignOut.mockReturnValue(
       new Promise<{ error: null }>((resolve) => {
@@ -195,7 +208,7 @@ describe("AuthButton", () => {
     await user.click(userButton);
 
     const logoutItem = await screen.findByRole("menuitem", {
-      name: /log out/i,
+      name: /logout|log out/i,
     });
 
     await user.click(logoutItem);
@@ -222,7 +235,7 @@ describe("AuthButton", () => {
   it("shows spinner in sign in button while signing in", async () => {
     const user = userEvent.setup();
 
-    let resolveSignIn: () => void = () => {};
+    let resolveSignIn: () => void = () => { };
 
     mockSignInWithOAuth.mockReturnValue(
       new Promise<{ data: Record<string, unknown>; error: null }>((resolve) => {
