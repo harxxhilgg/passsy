@@ -191,7 +191,7 @@ describe("AuthButton", () => {
     });
 
     // Make signOut hang so we can assert the spinner state
-    let resolveSignOut: () => void = () => { };
+    let resolveSignOut: () => void = () => {};
 
     mockSignOut.mockReturnValue(
       new Promise<{ error: null }>((resolve) => {
@@ -235,7 +235,7 @@ describe("AuthButton", () => {
   it("shows spinner in sign in button while signing in", async () => {
     const user = userEvent.setup();
 
-    let resolveSignIn: () => void = () => { };
+    let resolveSignIn: () => void = () => {};
 
     mockSignInWithOAuth.mockReturnValue(
       new Promise<{ data: Record<string, unknown>; error: null }>((resolve) => {
