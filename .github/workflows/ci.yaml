@@ -1,0 +1,59 @@
+name: CI Quality Gate
+
+on:
+  pull_request:
+    branches: [master, development]
+
+  push:
+    branches: [master, development]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DIRECT_URL: "postgresql://placeholder:placeholder@localhost:5432/db"
+  DATABASE_URL: "postgresql://placeholder:placeholder@localhost:6543/db"
+  NEXT_PUBLIC_SUPABASE_URL: "https://placeholder.supabase.co"
+  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: "place_holder"
+  ENCRYPTION_KEY: "0000000000000000000000000000000000000000000000000000000000000000"
+
+jobs:
+  verify:
+    name: "Typecheck, Lint & Build"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.5
+
+      - name: Cache Bun Dependencies
+        uses: actions/cache@v5
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+
+      - name: Install Dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Prettier Format Check
+        run: bun run format:check
+
+      - name: Typescript Typecheck
+        run: bun run typecheck
+
+      - name: Eslint Check
+        run: bun run lint
+
+      - name: Run Unit Tests
+        run: bun run test
+
+      - name: Verify Next.js Production Build
+        run: bun run build
