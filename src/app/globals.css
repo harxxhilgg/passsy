@@ -50,6 +50,14 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* 
+  ========================================================================
+  THEME: CLAUDE PRESET (Warm Earthy / Warm Charcoal Obsidian)
+  Backup of original theme is preserved in: src/app/theme-1-backup.css
+  ========================================================================
+*/
+
+/* --- THEME #1 (Original Minimal Monochrome) [BACKUP] ---
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -69,11 +77,6 @@
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
@@ -106,11 +109,6 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
@@ -121,6 +119,111 @@
   --sidebar-ring: oklch(0.556 0 0);
   --scrollbar-thumb: oklch(0.985 0 0 / 18%);
   --scrollbar-thumb-hover: oklch(0.985 0 0 / 32%);
+}
+--- END THEME #1 --- */
+
+:root {
+  /* Claude Light: Warm Parchment Canvas */
+  --background: #faf9f5;
+  --foreground: #1f1e1d;
+
+  /* Elevated surfaces & cards */
+  --card: #ffffff;
+  --card-foreground: #1f1e1d;
+  --popover: #ffffff;
+  --popover-foreground: #1f1e1d;
+
+  /* Claude Terracotta Accent */
+  --primary: #d97757;
+  --primary-foreground: #ffffff;
+
+  /* Warm secondary & muted tones */
+  --secondary: #ece9df;
+  --secondary-foreground: #1f1e1d;
+  --muted: #f0eee6;
+  --muted-foreground: #73726c;
+  --accent: #ece9df;
+  --accent-foreground: #1f1e1d;
+
+  /* Destructive & Warm Borders */
+  --destructive: #c94a29;
+  --border: #e5e2d9;
+  --input: #e5e2d9;
+  --ring: #d97757;
+
+  /* Charts */
+  --chart-1: #d97757;
+  --chart-2: #8a8880;
+  --chart-3: #5c5b56;
+  --chart-4: #b8b5aa;
+  --chart-5: #383733;
+
+  --radius: 0.625rem;
+
+  /* Sidebar */
+  --sidebar: #f5f3ec;
+  --sidebar-foreground: #1f1e1d;
+  --sidebar-primary: #d97757;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #ece9df;
+  --sidebar-accent-foreground: #1f1e1d;
+  --sidebar-border: #e5e2d9;
+  --sidebar-ring: #d97757;
+
+  /* Scrollbar */
+  --scrollbar-thumb: rgba(31, 30, 29, 0.18);
+  --scrollbar-thumb-hover: rgba(31, 30, 29, 0.32);
+}
+
+.dark {
+  /* Claude Dark: Warm Obsidian Charcoal (not harsh pure black) */
+  --background: #1b1a18;
+  --foreground: #ecebe4;
+
+  /* Elevated dark cards & popovers */
+  --card: #262522;
+  --card-foreground: #ecebe4;
+  --popover: #262522;
+  --popover-foreground: #ecebe4;
+
+  /* Claude Terracotta Accent (refined for dark contrast) */
+  --primary: #d97757;
+  --primary-foreground: #ffffff;
+
+  /* Warm dark secondary & muted surfaces */
+  --secondary: #302f2b;
+  --secondary-foreground: #ecebe4;
+  --muted: #2c2b28;
+  --muted-foreground: #99978f;
+  --accent: #302f2b;
+  --accent-foreground: #ecebe4;
+
+  /* Destructive & Warm Dark Borders */
+  --destructive: #e05d38;
+  --border: #383733;
+  --input: #383733;
+  --ring: #d97757;
+
+  /* Charts */
+  --chart-1: #d97757;
+  --chart-2: #99978f;
+  --chart-3: #73726c;
+  --chart-4: #4a4944;
+  --chart-5: #2c2b28;
+
+  /* Sidebar */
+  --sidebar: #21201d;
+  --sidebar-foreground: #ecebe4;
+  --sidebar-primary: #d97757;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #2c2b28;
+  --sidebar-accent-foreground: #ecebe4;
+  --sidebar-border: #383733;
+  --sidebar-ring: #d97757;
+
+  /* Scrollbar */
+  --scrollbar-thumb: rgba(236, 235, 228, 0.18);
+  --scrollbar-thumb-hover: rgba(236, 235, 228, 0.32);
 }
 
 @layer base {
