@@ -1,15 +1,21 @@
 import "./globals.css";
+import { cookies } from "next/headers";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthButton } from "@/components/auth/auth-button";
+import { TurnstileGate } from "@/components/turnstile-gate";
+import { TURNSTILE_COOKIE_NAME } from "@/app/api/turnstile/verify/route";
 import { fontMono, montserrat, playfairDisplay } from "@/utils/font";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const initialVerified = cookieStore.get(TURNSTILE_COOKIE_NAME)?.value === "1";
+
   return (
     <html
       lang="en"
@@ -29,6 +35,7 @@ export default function RootLayout({
                 <AuthButton />
               </header>
 
+              <TurnstileGate initialVerified={initialVerified} />
               {children}
             </div>
           </TooltipProvider>
