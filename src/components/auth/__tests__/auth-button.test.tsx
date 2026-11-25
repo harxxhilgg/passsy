@@ -110,6 +110,11 @@ describe("AuthButton", () => {
     });
     expect(historyItem).toBeInTheDocument();
 
+    const importExportItem = await screen.findByRole("menuitem", {
+      name: /import \/ export/i,
+    });
+    expect(importExportItem).toBeInTheDocument();
+
     expect(screen.getByText("Appearance")).toBeInTheDocument();
 
     expect(
