@@ -21,9 +21,12 @@ Sensitive fields (`password`, `email`, `username`) are encrypted server-side usi
 - **Authentication**: Google OAuth powered by Supabase SSR with guarded guest flows.
 - **Record Management**: Card options menu to pin/unpin, edit credentials, or delete with confirmation dialogs. Pinned records automatically float to the top.
 - **Direct Site Launch**: Launch stored URLs directly in a new tab from the credential card.
+- **Extended Search**: Search saved records by site name, email, or username with bolded match highlighting.
+- **Import & Export (`/import-export`)**: Auto-detecting CSV/JSON import (including browser CSV exports) with duplicate skipping, plus **Export as** CSV or JSON (`Passy_Passwords_YYYYMMDD_XXXXXX`) for all or manually selected records.
 - **Activity History (`/activity`)**: Searchable audit log of vault activities (`saved`, `updated`, `deleted`) with relative timestamps and clear history options.
+- **Bot Protection**: Cloudflare Turnstile verification.
 - **Favicon Resolution**: Automatic high-resolution domain favicon resolution with fallback icons.
-- **Theme Support**: Light, Dark, and System theme switching via `next-themes`.
+- **Theme Support**: Claude-inspired Light, Dark, and System theme switching via `next-themes`.
 
 ---
 
@@ -34,10 +37,10 @@ Sensitive fields (`password`, `email`, `username`) are encrypted server-side usi
 | **Framework**        | Next.js 16 (App Router, Turbopack, Server Actions)             |
 | **Frontend**         | React 19, TypeScript 5, Tailwind CSS v4, Base UI, Lucide Icons |
 | **Database & ORM**   | PostgreSQL (Supabase), Prisma ORM 7                            |
-| **Authentication**   | Supabase SSR (Google OAuth)                                    |
+| **Authentication**   | Supabase SSR (Google OAuth), Cloudflare Turnstile              |
 | **Cryptography**     | Node.js `crypto` (AES-256-GCM)                                 |
 | **State Management** | Zustand                                                        |
-| **Testing**          | Vitest, Testing Library                                        |
+| **Testing**          | Vitest, React Testing Library                                  |
 
 ---
 
@@ -121,6 +124,10 @@ Sensitive fields (`password`, `email`, `username`) are encrypted server-side usi
 
    # AES-256 Master Key (64-character hex string)
    ENCRYPTION_KEY=your_generated_64_char_hex_key
+
+   # Cloudflare Turnstile
+   NEXT_PUBLIC_TURNSTILE_SITE_KEY=your-turnstile-site-key
+   TURNSTILE_SECRET_KEY=your-turnstile-secret-key
    ```
 
    Generate a 64-character hex encryption key:
