@@ -30,7 +30,7 @@ export function SavedListEmpty({ type, query }: SavedListEmptyProps) {
         <SearchX className="mb-2 size-8 opacity-40" />
 
         <p className="text-sm font-medium text-foreground">
-          No matching websites
+          No matching records
         </p>
 
         {query && (
