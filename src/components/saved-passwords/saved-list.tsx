@@ -107,14 +107,19 @@ export function SavedList({ data, initialRecords }: SavedListProps) {
     (state) => state.showFavoritesOnly
   );
 
-  // Filter items by site (case-insensitive) & favorites filter, sorted with pinned first
+  // Filter items by site, email, or username (case-insensitive) & favorites filter, sorted with pinned first
   const filteredData = useMemo(() => {
     if (!items) return [];
     let list = items;
 
     const query = debouncedQuery.trim().toLowerCase();
     if (query) {
-      list = list.filter((item) => item.site.toLowerCase().includes(query));
+      list = list.filter(
+        (item) =>
+          item.site.toLowerCase().includes(query) ||
+          item.email.toLowerCase().includes(query) ||
+          (item.username?.toLowerCase().includes(query) ?? false)
+      );
     }
 
     if (showFavoritesOnly) {
@@ -177,7 +182,11 @@ export function SavedList({ data, initialRecords }: SavedListProps) {
             )
           ) : (
             filteredData.map((item) => (
-              <SavedRecordItem key={item.id} item={item} />
+              <SavedRecordItem
+                key={item.id}
+                item={item}
+                searchQuery={debouncedQuery}
+              />
             ))
           )}
         </div>

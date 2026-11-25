@@ -21,8 +21,8 @@ export function SavedListSearch({
       <Input
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder="Search websites..."
-        aria-label="Search websites"
+        placeholder="Search by site, email, or username..."
+        aria-label="Search by site, email, or username"
         className="h-9 w-full rounded-xl border-border/60 bg-card pr-9 pl-9 shadow-xs transition-colors placeholder:text-muted-foreground/70 focus-visible:ring-1 dark:bg-muted/40"
       />
       {value && (

@@ -39,9 +39,31 @@ import { SavedRecordFavicon } from "./saved-record-favicon";
 
 type SavedRecordItemProps = {
   item: SavedRecord;
+  searchQuery?: string;
 };
 
-export function SavedRecordItem({ item }: SavedRecordItemProps) {
+function highlightMatch(text: string, query?: string) {
+  const trimmed = query?.trim();
+  if (!trimmed) return text;
+
+  const escaped = trimmed.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const regex = new RegExp(`(${escaped})`, "gi");
+  const parts = text.split(regex);
+
+  if (parts.length === 1) return text;
+
+  return parts.map((part, index) =>
+    index % 2 === 1 ? (
+      <strong key={index} className="font-bold">
+        {part}
+      </strong>
+    ) : (
+      part
+    )
+  );
+}
+
+export function SavedRecordItem({ item, searchQuery }: SavedRecordItemProps) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -107,7 +129,9 @@ export function SavedRecordItem({ item }: SavedRecordItemProps) {
           <div className="flex min-w-0 items-center gap-1.5">
             <SavedRecordFavicon site={item.site} />
 
-            <span className="truncate text-sm font-medium">{item.site}</span>
+            <span className="truncate text-sm font-medium">
+              {highlightMatch(item.site, searchQuery)}
+            </span>
 
             {/* Subtle indicator when pinned (placed before link button so it sits flush with the site name) */}
             {item.isPinned && (
@@ -193,7 +217,7 @@ export function SavedRecordItem({ item }: SavedRecordItemProps) {
               <div className="flex min-w-0 flex-1 items-center gap-2">
                 <Mail className="size-3.5 shrink-0 text-muted-foreground" />
                 <span className="truncate font-mono text-foreground">
-                  {item.email}
+                  {highlightMatch(item.email, searchQuery)}
                 </span>
               </div>
 
@@ -219,7 +243,7 @@ export function SavedRecordItem({ item }: SavedRecordItemProps) {
               <div className="flex min-w-0 flex-1 items-center gap-2">
                 <User className="size-3.5 shrink-0 text-muted-foreground" />
                 <span className="truncate font-mono text-foreground">
-                  {item.username}
+                  {highlightMatch(item.username!, searchQuery)}
                 </span>
               </div>
 
