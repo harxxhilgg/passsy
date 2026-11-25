@@ -208,4 +208,21 @@ describe("SavedRecordItem", () => {
       )
     ).toBeInTheDocument();
   });
+
+  it("bolds matching characters in site, email, and username when searchQuery is provided", () => {
+    const record = {
+      ...mockRecordWithUsername,
+      site: "harshil.dev",
+      email: "harshil@example.com",
+      username: "the_Harshil_dev",
+    };
+
+    render(<SavedRecordItem item={record} searchQuery="harshil" />);
+
+    const boldMatches = document.querySelectorAll("strong");
+    expect(boldMatches).toHaveLength(3);
+    expect(boldMatches[0]).toHaveTextContent("harshil");
+    expect(boldMatches[1]).toHaveTextContent("harshil");
+    expect(boldMatches[2]).toHaveTextContent("Harshil");
+  });
 });
