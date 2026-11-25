@@ -318,3 +318,142 @@ export async function deletePasswordAction(
     };
   }
 }
+
+export async function importPasswordsAction(
+  items: {
+    site: string;
+    email: string;
+    username?: string;
+    password: string;
+    isPinned?: boolean;
+  }[]
+): Promise<{
+  success: boolean;
+  importedRecords?: SavedRecordData[];
+  duplicateCount?: number;
+  invalidCount?: number;
+  error?: string;
+}> {
+  try {
+    const user = await getAuthenticatedUser();
+    if (!user) {
+      return {
+        success: false,
+        error: "You must be signed in to import passwords.",
+      };
+    }
+
+    if (!Array.isArray(items) || items.length === 0) {
+      return {
+        success: false,
+        error: "No password records provided to import.",
+      };
+    }
+
+    const existingRecords = await prisma.passwordRecord.findMany({
+      where: { userId: user.id },
+    });
+
+    const existingKeys = new Set<string>();
+    for (const record of existingRecords) {
+      try {
+        const rawJson = decryptText({
+          ciphertext: record.ciphertext,
+          iv: record.iv,
+          tag: record.tag,
+        });
+        const payload: SensitivePayload = JSON.parse(rawJson);
+        existingKeys.add(
+          `${record.site.trim().toLowerCase()}::${payload.email.trim().toLowerCase()}::${(payload.username ?? "").trim().toLowerCase()}::${payload.password}`
+        );
+      } catch {
+        // Ignore records that fail to decrypt
+      }
+    }
+
+    let duplicateCount = 0;
+    let invalidCount = 0;
+    const toCreate: {
+      site: string;
+      payload: SensitivePayload;
+      isPinned: boolean;
+    }[] = [];
+
+    for (const item of items) {
+      const site = item.site?.trim() ?? "";
+      const email = item.email?.trim() ?? "";
+      const username = item.username?.trim() || "";
+      const password = item.password ?? "";
+
+      if (!site || !email || !password.trim()) {
+        invalidCount++;
+        continue;
+      }
+
+      const key = `${site.toLowerCase()}::${email.toLowerCase()}::${username.toLowerCase()}::${password}`;
+      if (existingKeys.has(key)) {
+        duplicateCount++;
+        continue;
+      }
+
+      existingKeys.add(key);
+      toCreate.push({
+        site,
+        payload: { email, username, password },
+        isPinned: Boolean(item.isPinned),
+      });
+    }
+
+    const created =
+      toCreate.length > 0
+        ? await prisma.$transaction(
+            toCreate.map(({ site, payload, isPinned }) => {
+              const { ciphertext, iv, tag } = encryptText(
+                JSON.stringify(payload)
+              );
+              return prisma.passwordRecord.create({
+                data: {
+                  userId: user.id,
+                  site,
+                  ciphertext,
+                  iv,
+                  tag,
+                  isPinned,
+                },
+              });
+            })
+          )
+        : [];
+
+    const importedRecords: SavedRecordData[] = created.map((record, index) => {
+      const { payload } = toCreate[index];
+      return {
+        id: record.id,
+        site: record.site,
+        email: payload.email,
+        username: payload.username || undefined,
+        password: payload.password,
+        isPinned: record.isPinned ?? false,
+        createdAt: record.createdAt.toISOString(),
+        updatedAt: record.updatedAt.toISOString(),
+      };
+    });
+
+    if (importedRecords.length > 0) {
+      revalidatePath("/");
+    }
+
+    return {
+      success: true,
+      importedRecords,
+      duplicateCount,
+      invalidCount,
+    };
+  } catch (err) {
+    console.error("importPasswordsAction error:", err);
+    return {
+      success: false,
+      error: "Failed to import passwords.",
+    };
+  }
+}

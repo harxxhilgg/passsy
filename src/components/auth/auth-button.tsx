@@ -2,7 +2,7 @@
 
 import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
-import { History, Info, LogOut } from "lucide-react";
+import { ArrowUpDown, History, Info, LogOut } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useAuth } from "@/hooks/use-auth";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -153,6 +153,14 @@ export function AuthButton() {
           >
             <History className="size-4" />
             <span>History</span>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            render={<Link href="/import-export" />}
+            className="cursor-pointer"
+          >
+            <ArrowUpDown className="size-4" />
+            <span>Import / Export</span>
           </DropdownMenuItem>
 
           <DropdownMenuSeparator className="my-1.5" />
